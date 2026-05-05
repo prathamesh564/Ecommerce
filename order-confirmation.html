@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation | TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .confirmation-container {
+      max-width: 600px;
+      margin: 100px auto;
+      text-align: center;
+      padding: 50px 30px;
+    }
+    .success-icon {
+      font-size: 5rem;
+      color: #00e676;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+    }
+    .order-details {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      text-align: left;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: var(--color-silver);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass">
+    <a href="index.html" class="logo">Task<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html">Categories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="confirmation-container glass floating">
+      <div class="success-icon">✓</div>
+      <h1 style="margin-bottom: 15px;">Order Confirmed!</h1>
+      <p style="color: var(--color-text-muted);">Thank you for your purchase. Your order has been received and is being processed.</p>
+      
+      <div class="order-details">
+        <div class="detail-row">
+          <span>Order Number:</span>
+          <strong style="color: white;" id="order-number">#TF000000</strong>
+        </div>
+        <div class="detail-row">
+          <span>Status:</span>
+          <strong style="color: var(--color-indigo);">Processing</strong>
+        </div>
+      </div>
+      
+      <a href="products.html" class="btn-primary" style="display: inline-block; margin-top: 40px;">Continue Shopping</a>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('orderId');
+      if (orderId) {
+        document.getElementById('order-number').textContent = '#' + orderId;
+      }
+    });
+  </script>
+</body>
+</html>

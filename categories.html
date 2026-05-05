@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories | TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass">
+    <a href="index.html" class="logo">Task<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html"
+        style="color: var(--color-text-main); border-bottom: 2px solid var(--color-indigo);">Categories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a href="search.html" style="margin-right: 20px; color: var(--color-silver);">🔍</a>
+      <a href="cart.html" class="cart-icon">
+        🛒
+        <span class="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1 class="section-title">Shop by Category</h1>
+
+    <div class="category-grid" style="grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 40px;">
+
+      <a href="products.html?category=audio" class="category-card glass floating" style="height: 400px;">
+        <div class="category-content">
+          <h3>Audio</h3>
+          <p style="color: var(--color-text-muted); margin-bottom: 20px;">Experience weightless, high-fidelity sound.
+          </p>
+          <span class="btn-secondary">Explore Audio</span>
+        </div>
+        <img src="https://cdn.pixabay.com/photo/2023/10/12/13/05/headphones-8310796_1280.jpg" alt="Audio Category">
+      </a>
+
+      <a href="products.html?category=wearables" class="category-card glass floating" style="height: 400px;">
+        <div class="category-content">
+          <h3>Wearables</h3>
+          <p style="color: var(--color-text-muted); margin-bottom: 20px;">Smart technology that moves with you
+            seamlessly.</p>
+          <span class="btn-secondary">Explore Wearables</span>
+        </div>
+        <img src="https://tse4.mm.bing.net/th/id/OIP.CulfdqGSzK8uS3stBQ2uTQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+          alt="Wearables Category">
+      </a>
+
+      <a href="products.html?category=gaming" class="category-card glass floating" style="height: 400px;">
+        <div class="category-content">
+          <h3>Gaming & VR</h3>
+          <p style="color: var(--color-text-muted); margin-bottom: 20px;">Immerse yourself in other worlds.</p>
+          <span class="btn-secondary">Explore Gaming</span>
+        </div>
+        <img src="https://tse4.mm.bing.net/th/id/OIP.MtNyVOxnxsXXP0DRGt9axQHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+          alt="Gaming Category">
+      </a>
+
+      <a href="products.html?category=accessories" class="category-card glass floating" style="height: 400px;">
+        <div class="category-content">
+          <h3>Accessories</h3>
+          <p style="color: var(--color-text-muted); margin-bottom: 20px;">The perfect companions for your tech.</p>
+          <span class="btn-secondary">Explore Accessories</span>
+        </div>
+        <img src="https://img.freepik.com/premium-photo/photographs-fashion-accessories_883586-41792.jpg"
+          alt="Accessories Category">
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass container" style="margin-bottom: 20px; margin-top: 50px;">
+    <div class="logo" style="font-size: 1.5rem;">Task<span>Flow</span></div>
+    <div class="footer-links">
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+    <div style="color: var(--color-text-muted); font-size: 0.9rem;">
+      &copy; 2026 TaskFlow. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="scroll-top">↑</div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

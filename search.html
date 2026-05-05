@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search | TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .search-header {
+      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+    .search-bar {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+    }
+    .search-input {
+      flex: 1;
+      padding: 15px 20px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      color: white;
+      font-family: inherit;
+      font-size: 1.1rem;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--color-indigo);
+      box-shadow: 0 0 15px var(--color-indigo-glow);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass">
+    <a href="index.html" class="logo">Task<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html">Categories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a href="search.html" style="margin-right: 20px; color: var(--color-text-main);">🔍</a>
+      <a href="cart.html" class="cart-icon">
+        🛒
+        <span class="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="search-header">
+      <h1>What are you looking for?</h1>
+      <p style="color: var(--color-text-muted); margin-top: 10px; margin-bottom: 30px;">Search our collection of antigravity tech.</p>
+      
+      <div class="search-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="Search products, categories...">
+        <button id="search-btn" class="btn-primary" style="padding: 15px 30px;">Search</button>
+      </div>
+    </div>
+    
+    <div id="search-results-info" style="margin-bottom: 20px; color: var(--color-silver); display: none;">
+      Found <span id="result-count">0</span> results for "<strong id="search-query" style="color: white;"></strong>"
+    </div>
+
+    <div class="product-grid" id="search-results">
+      <!-- Results injected here -->
+    </div>
+  </main>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const searchBtn = document.getElementById('search-btn');
+      const resultsContainer = document.getElementById('search-results');
+      const infoContainer = document.getElementById('search-results-info');
+      const queryText = document.getElementById('search-query');
+      const countText = document.getElementById('result-count');
+
+      // Check URL for query
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlQuery = urlParams.get('q');
+      if (urlQuery) {
+        searchInput.value = urlQuery;
+        performSearch(urlQuery);
+      }
+
+      searchBtn.addEventListener('click', () => {
+        const query = searchInput.value.trim();
+        if (query) performSearch(query);
+      });
+
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const query = searchInput.value.trim();
+          if (query) performSearch(query);
+        }
+      });
+
+      function performSearch(query) {
+        // Update URL
+        window.history.replaceState({}, '', `search.html?q=${encodeURIComponent(query)}`);
+        
+        const results = ProductAPI.search(query);
+        
+        infoContainer.style.display = 'block';
+        queryText.textContent = query;
+        countText.textContent = results.length;
+        
+        resultsContainer.innerHTML = '';
+        
+        if (results.length === 0) {
+          resultsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--color-text-muted); margin-top: 50px;">Try different keywords to find what you are looking for.</p>';
+          return;
+        }
+
+        results.forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'product-card glass floating';
+          card.innerHTML = `
+            <a href="product-view.html?id=${product.id}" class="product-image">
+              <img src="${product.image}" alt="${product.name}">
+            </a>
+            <a href="product-view.html?id=${product.id}">
+              <h3 class="product-title">${product.name}</h3>
+            </a>
+            <p class="product-price">$${product.price.toFixed(2)}</p>
+            <button class="btn-primary" onclick="Cart.addItem({id: ${product.id}, name: '${product.name}', price: ${product.price}, image: '${product.image}'})">Add to Cart</button>
+          `;
+          resultsContainer.appendChild(card);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

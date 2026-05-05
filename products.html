@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .products-layout {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .filters-sidebar {
+      flex: 0 0 250px;
+      padding: 30px;
+      height: fit-content;
+    }
+    .products-main {
+      flex: 1;
+    }
+    .filter-group {
+      margin-bottom: 30px;
+    }
+    .filter-group h3 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid var(--color-silver);
+      padding-bottom: 5px;
+    }
+    .filter-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .filter-option input {
+      margin-right: 10px;
+      accent-color: var(--color-indigo);
+    }
+    .price-range {
+      width: 100%;
+      accent-color: var(--color-indigo);
+    }
+    
+    @media (max-width: 768px) {
+      .products-layout {
+        flex-direction: column;
+      }
+      .filters-sidebar {
+        flex: 1;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass">
+    <a href="index.html" class="logo">Task<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html">Categories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a href="search.html" style="margin-right: 20px; color: var(--color-silver);">🔍</a>
+      <a href="cart.html" class="cart-icon">
+        🛒
+        <span class="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="products-layout">
+      <!-- Filters Sidebar -->
+      <aside class="filters-sidebar glass">
+        <div class="filter-group">
+          <h3>Categories</h3>
+          <label class="filter-option">
+            <input type="radio" name="category" value="all" checked> All
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="category" value="audio"> Audio
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="category" value="wearables"> Wearables
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="category" value="gaming"> Gaming
+          </label>
+        </div>
+        
+        <div class="filter-group">
+          <h3>Price Range</h3>
+          <input type="range" class="price-range" min="0" max="1000" value="1000" id="price-slider">
+          <div style="display: flex; justify-content: space-between; margin-top: 10px; color: var(--color-text-muted);">
+            <span>$0</span>
+            <span id="price-display">$1000</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Products Grid -->
+      <div class="products-main">
+        <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">All Products</h2>
+        <div class="product-grid" id="products-container">
+          <!-- Dynamic products injected here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass container" style="margin-bottom: 20px;">
+    <div class="logo" style="font-size: 1.5rem;">Task<span>Flow</span></div>
+    <div class="footer-links">
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+    <div style="color: var(--color-text-muted); font-size: 0.9rem;">
+      &copy; 2026 TaskFlow. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="scroll-top">↑</div>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('products-container');
+      const categoryRadios = document.querySelectorAll('input[name="category"]');
+      const priceSlider = document.getElementById('price-slider');
+      const priceDisplay = document.getElementById('price-display');
+
+      // Check URL for category filter
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlCategory = urlParams.get('category');
+      if (urlCategory) {
+        const radio = document.querySelector(`input[name="category"][value="${urlCategory}"]`);
+        if (radio) radio.checked = true;
+      }
+
+      function renderProducts() {
+        container.innerHTML = '';
+        
+        const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+        const maxPrice = parseInt(priceSlider.value);
+        
+        let filtered = ProductAPI.getAll();
+        
+        if (selectedCategory !== 'all') {
+          filtered = filtered.filter(p => p.category === selectedCategory);
+        }
+        
+        filtered = filtered.filter(p => p.price <= maxPrice);
+
+        if (filtered.length === 0) {
+          container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--color-text-muted);">No products found matching your criteria.</p>';
+          return;
+        }
+
+        filtered.forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'product-card glass floating';
+          card.innerHTML = `
+            <a href="product-view.html?id=${product.id}" class="product-image">
+              <img src="${product.image}" alt="${product.name}">
+            </a>
+            <a href="product-view.html?id=${product.id}">
+              <h3 class="product-title">${product.name}</h3>
+            </a>
+            <p class="product-price">$${product.price.toFixed(2)}</p>
+            <button class="btn-primary" onclick="Cart.addItem({id: ${product.id}, name: '${product.name}', price: ${product.price}, image: '${product.image}'})">Add to Cart</button>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      categoryRadios.forEach(radio => radio.addEventListener('change', renderProducts));
+      
+      priceSlider.addEventListener('input', (e) => {
+        priceDisplay.textContent = `$${e.target.value}`;
+        renderProducts();
+      });
+
+      renderProducts();
+    });
+  </script>
+</body>
+</html>

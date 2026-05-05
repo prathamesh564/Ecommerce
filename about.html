@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .about-hero {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      margin-bottom: 100px;
+    }
+
+    .about-text {
+      flex: 1;
+    }
+
+    .about-text h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+    }
+
+    .about-text p {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .about-image {
+      flex: 1;
+    }
+
+    .about-image img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: var(--shadow-float);
+    }
+
+    .testimonials {
+      margin-top: 100px;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .testimonial-card {
+      padding: 30px;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      color: var(--color-silver);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .author-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--color-indigo);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .about-hero {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass">
+    <a href="index.html" class="logo">Task<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html">Categories</a>
+      <a href="about.html"
+        style="color: var(--color-text-main); border-bottom: 2px solid var(--color-indigo);">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a href="search.html" style="margin-right: 20px; color: var(--color-silver);">🔍</a>
+      <a href="cart.html" class="cart-icon">
+        🛒
+        <span class="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="about-hero">
+      <div class="about-text">
+        <h1>Defying Gravity.</h1>
+        <p>TaskFlow was born out of a desire to create an e-commerce experience that feels entirely weightless. We
+          curate the most advanced, sleekest tech products available.</p>
+        <p>Our commitment to the "Antigravity" aesthetic is more than just design; it's a philosophy of seamless
+          interaction and frictionless shopping.</p>
+      </div>
+      <div class="about-image">
+        <img src="https://mir-s3-cdn-cf.behance.net/projects/404/7473ec173527771.Y3JvcCwxMDgwLDg0NCwwLDA.jpg"
+          alt="TaskFlow Brand Abstract">
+      </div>
+    </div>
+
+    <!-- Features -->
+    <section>
+      <h2 class="section-title">Our Core Values</h2>
+      <div class="features-grid">
+        <div class="feature-card glass floating">
+          <div class="feature-icon">✨</div>
+          <h3>Minimalism</h3>
+          <p style="color: var(--color-text-muted); margin-top: 10px;">We believe in stripping away the unnecessary.</p>
+        </div>
+        <div class="feature-card glass floating">
+          <div class="feature-icon">🔬</div>
+          <h3>Innovation</h3>
+          <p style="color: var(--color-text-muted); margin-top: 10px;">Bringing you the bleeding edge of consumer tech.
+          </p>
+        </div>
+        <div class="feature-card glass floating">
+          <div class="feature-icon">💎</div>
+          <h3>Premium Quality</h3>
+          <p style="color: var(--color-text-muted); margin-top: 10px;">Only the best materials, right down to the
+            pixels.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+      <h2 class="section-title">What Our Customers Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial-card glass floating">
+          <p class="testimonial-text">"The interface is so smooth it feels like the products are floating right out of
+            my screen. The headphones I bought are incredible."</p>
+          <div class="testimonial-author">
+            <div class="author-img">JD</div>
+            <div>
+              <strong>John Doe</strong>
+              <div style="font-size: 0.8rem; color: var(--color-text-muted);">Verified Buyer</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card glass floating">
+          <p class="testimonial-text">"Absolutely love the dark mode aesthetic. Checkout was a breeze and the shipping
+            was lightning fast."</p>
+          <div class="testimonial-author">
+            <div class="author-img" style="background: #e91e63;">SM</div>
+            <div>
+              <strong>Sarah Miller</strong>
+              <div style="font-size: 0.8rem; color: var(--color-text-muted);">Verified Buyer</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card glass floating">
+          <p class="testimonial-text">"The product curation is top tier. I didn't know I needed a quantum speaker until
+            I saw it here."</p>
+          <div class="testimonial-author">
+            <div class="author-img" style="background: #00bcd4;">AT</div>
+            <div>
+              <strong>Alex Turner</strong>
+              <div style="font-size: 0.8rem; color: var(--color-text-muted);">Verified Buyer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass container" style="margin-bottom: 20px;">
+    <div class="logo" style="font-size: 1.5rem;">Task<span>Flow</span></div>
+    <div class="footer-links">
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+    <div style="color: var(--color-text-muted); font-size: 0.9rem;">
+      &copy; 2026 TaskFlow. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="scroll-top">↑</div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

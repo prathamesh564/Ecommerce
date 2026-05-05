@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart | TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .cart-container {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .cart-items {
+      flex: 2;
+    }
+    .cart-summary {
+      flex: 1;
+      height: fit-content;
+      padding: 30px;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      margin-bottom: 20px;
+      gap: 20px;
+    }
+    .cart-item-img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-title {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .cart-item-price {
+      color: var(--color-indigo);
+      font-weight: bold;
+    }
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .qty-btn {
+      background: var(--glass-border);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .qty-input {
+      width: 40px;
+      text-align: center;
+      background: transparent;
+      border: 1px solid var(--color-silver);
+      color: white;
+      border-radius: 5px;
+      padding: 5px;
+    }
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: #ff4d4d;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    .summary-total {
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-top: 1px solid var(--color-silver);
+      padding-top: 15px;
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .cart-container {
+        flex-direction: column;
+      }
+      .cart-item {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass">
+    <a href="index.html" class="logo">Task<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html">Categories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a href="search.html" style="margin-right: 20px; color: var(--color-silver);">🔍</a>
+      <a href="cart.html" class="cart-icon">
+        🛒
+        <span class="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1 class="section-title" style="text-align: left; margin-bottom: 20px;">Your Cart</h1>
+    
+    <div id="empty-cart" style="display: none; text-align: center; padding: 100px;">
+      <h2>Your cart is empty</h2>
+      <a href="products.html" class="btn-primary" style="display: inline-block; margin-top: 20px;">Continue Shopping</a>
+    </div>
+
+    <div class="cart-container" id="cart-content" style="display: none;">
+      <div class="cart-items" id="cart-items-container">
+        <!-- Cart items injected here -->
+      </div>
+      
+      <div class="cart-summary glass">
+        <h2 style="margin-bottom: 20px;">Order Summary</h2>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summary-subtotal">$0.00</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>Free</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span id="summary-total">$0.00</span>
+        </div>
+        <button class="btn-primary" style="width: 100%; padding: 15px;" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass container" style="margin-bottom: 20px;">
+    <div class="logo" style="font-size: 1.5rem;">Task<span>Flow</span></div>
+    <div class="footer-links">
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+    <div style="color: var(--color-text-muted); font-size: 0.9rem;">
+      &copy; 2026 TaskFlow. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('cart-items-container');
+      const emptyCart = document.getElementById('empty-cart');
+      const cartContent = document.getElementById('cart-content');
+      
+      // Update quantity exposed to global for onclick handlers
+      window.changeQty = function(id, delta) {
+        const input = document.getElementById(`qty-${id}`);
+        let current = parseInt(input.value);
+        let newVal = current + delta;
+        if (newVal < 1) newVal = 1;
+        input.value = newVal;
+        Cart.updateQuantity(id, newVal);
+        renderCart();
+      };
+
+      window.removeCartItem = function(id) {
+        Cart.removeItem(id);
+        renderCart();
+      };
+
+      window.updateQtyManual = function(id, val) {
+        let newVal = parseInt(val);
+        if (isNaN(newVal) || newVal < 1) newVal = 1;
+        Cart.updateQuantity(id, newVal);
+        renderCart();
+      };
+
+      function renderCart() {
+        const items = Cart.getItems();
+        
+        if (items.length === 0) {
+          emptyCart.style.display = 'block';
+          cartContent.style.display = 'none';
+          return;
+        }
+
+        emptyCart.style.display = 'none';
+        cartContent.style.display = 'flex';
+        container.innerHTML = '';
+        
+        items.forEach(item => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'cart-item glass';
+          itemEl.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-info">
+              <h3 class="cart-item-title">${item.name}</h3>
+              <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+            </div>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+              <input type="number" class="qty-input" id="qty-${item.id}" value="${item.quantity}" onchange="updateQtyManual(${item.id}, this.value)">
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+            <div style="width: 100px; text-align: right; font-weight: bold;">
+              $${(item.price * item.quantity).toFixed(2)}
+            </div>
+            <button class="remove-btn" onclick="removeCartItem(${item.id})">🗑️</button>
+          `;
+          container.appendChild(itemEl);
+        });
+
+        const total = Cart.getTotal();
+        document.getElementById('summary-subtotal').textContent = `$${total.toFixed(2)}`;
+        document.getElementById('summary-total').textContent = `$${total.toFixed(2)}`;
+      }
+
+      renderCart();
+    });
+  </script>
+</body>
+</html>
